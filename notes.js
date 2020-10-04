@@ -3,33 +3,38 @@ const chalk = require('chalk');
 const { writeFile } = require('fs');
 const notesPath = `Notes.json`;
 
-const getNotes = async () => {
+const loadNotes = async () => {
     try {
         return JSON.parse(await fs.readFile(notesPath));
-    } catch {
+    } catch(e) {
         return [];
     }
 }
 
+const saveNotes = async (notes) => {
+    await fs.writeFile(notesPath, JSON.stringify(notes));
+}
+
 const addNotes = async (title, body) => {
-    const notes = await getNotes();
+    const notes = await loadNotes();
     const duplicateNote = notes.find(note => note.title === title);
     if(duplicateNote) {
         console.log(chalk.red.inverse('Note with same title already exists!'));
     } else {
-        const notesContent = JSON.stringify([...notes, { title, body }]);
-        await fs.writeFile(notesPath, notesContent);
+        // await fs.writeFile(notesPath, JSON.stringify([...notes, { title, body }]));
+        saveNotes([...notes, { title, body }]);
         console.log(chalk.green.inverse('Note added!'));
     }
 }
 
 const deleteNotes = async (title) => {
-    const notes = await getNotes();
+    const notes = await loadNotes();
     const updatedNotes = notes.filter(note => note.title !== title);
     if(updatedNotes.length === notes.length) {
         console.log(chalk.inverse.red('Note with given title doesnot exist!'));
     } else {
-        await fs.writeFile(notesPath, JSON.stringify(updatedNotes));
+        // await fs.writeFile(notesPath, JSON.stringify(updatedNotes));
+        saveNotes(updatedNotes);
         console.log(chalk.inverse.green('Note removd successfully!'));
     }
 }
