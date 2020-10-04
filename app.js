@@ -19,4 +19,21 @@ yargs.command({
     handler: (argv) => {
         notes.addNotes(argv.title, argv.body);
     }
-}).argv;
+});
+
+yargs.command({
+    command: 'delete',
+    description: 'Delete note',
+    builder: {
+        'title': {
+            describe: 'Title of the note used to delete that particular note if present [unique]',
+            type: 'string',
+            demandOption: true
+        }
+    },
+    handler: (argv) => {
+        notes.deleteNotes(argv.title);
+    }
+});
+
+yargs.parse();

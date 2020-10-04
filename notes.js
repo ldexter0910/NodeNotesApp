@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const chalk = require('chalk');
+const { writeFile } = require('fs');
 const notesPath = `Notes.json`;
 
 const getNotes = async () => {
@@ -22,6 +23,18 @@ const addNotes = async (title, body) => {
     }
 }
 
+const deleteNotes = async (title) => {
+    const notes = await getNotes();
+    const updatedNotes = notes.filter(note => note.title !== title);
+    if(updatedNotes.length === notes.length) {
+        console.log(chalk.inverse.red('Note with given title doesnot exist!'));
+    } else {
+        await fs.writeFile(notesPath, JSON.stringify(updatedNotes));
+        console.log(chalk.inverse.green('Note removd successfully!'));
+    }
+}
+
 module.exports = {
-    addNotes
+    addNotes,
+    deleteNotes
 };
