@@ -17,7 +17,7 @@ yargs.command({
         }
     },
     handler: (argv) => {
-        notes.addNotes(argv.title, argv.body);
+        notes.addNote(argv.title, argv.body);
     }
 });
 
@@ -32,7 +32,7 @@ yargs.command({
         }
     },
     handler: (argv) => {
-        notes.deleteNotes(argv.title);
+        notes.deleteNote(argv.title);
     }
 });
 
@@ -55,7 +55,35 @@ yargs.command({
         }
     },
     handler: (argv) => {
-        notes.readNotes(argv.title);
+        notes.readNote(argv.title);
+    }
+});
+
+yargs.command({
+    command: 'update',
+    description: 'Update a particular note',
+    builder: {
+        'title': {
+            type: 'string',
+            describe: 'Title of the note [unique]',
+            demandOption: true
+        },
+        'body' : {
+            describe: 'Body of the note [not unique]',
+            type: 'string',
+            demandOption: true
+        }
+    },
+    handler: (argv) => {
+        notes.updateNote(argv.title, argv.body);
+    }
+});
+
+yargs.command({
+    command: 'clear',
+    description: 'Clear all existing notes',
+    handler: () => {
+        notes.removeAllNotes();
     }
 });
 

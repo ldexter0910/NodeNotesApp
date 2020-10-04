@@ -1,6 +1,5 @@
 const fs = require('fs').promises;
 const chalk = require('chalk');
-const { writeFile } = require('fs');
 const notesPath = `Notes.json`;
 
 const loadNotes = async () => {
@@ -15,7 +14,7 @@ const saveNotes = async (notes) => {
     await fs.writeFile(notesPath, JSON.stringify(notes));
 }
 
-const addNotes = async (title, body) => {
+const addNote = async (title, body) => {
     const notes = await loadNotes();
     const duplicateNote = notes.find(note => note.title === title);
     if(duplicateNote) {
@@ -26,7 +25,7 @@ const addNotes = async (title, body) => {
     }
 }
 
-const deleteNotes = async (title) => {
+const deleteNote = async (title) => {
     const notes = await loadNotes();
     const updatedNotes = notes.filter(note => note.title !== title);
     if(updatedNotes.length === notes.length) {
@@ -37,16 +36,31 @@ const deleteNotes = async (title) => {
     }
 }
 
-const listNotes = async () => {
+const updateNote = async (title, body) => {
     const notes = await loadNotes();
-    console.log(chalk.inverse.white('Your Notes'));
-
-    notes.forEach(note => {
-        console.log(note.title);
-    });
+    const note = notes.find(note  => note.title === title);
+    if(note) {
+        note.body = body;
+        saveNotes(notes);
+        console.log(chalk.green.inverse('Note updated successfully!'));
+    } else {
+        console.log(chalk.red.inverse('Note with given title doesnot exist!'));
+    }
 }
 
-const readNotes = async (title) => {
+const listNotes = async () => {
+    const notes = await loadNotes();
+    if(notes.length) {
+        console.log(chalk.inverse.white('Your Notes'));
+        notes.forEach(note => {
+            console.log(note.title);
+        });
+    } else {
+        console.log(chalk.inverse.white('No notes exist!'));
+    }
+}
+
+const readNote = async (title) => {
     const notes = await loadNotes();
     const note = notes.find(note => note.title === title);
     if(note) {
@@ -58,9 +72,16 @@ const readNotes = async (title) => {
     }
 }
 
+const removeAllNotes = () => {
+    saveNotes([]);
+    console.log(chalk.green.inverse('Cleared all successfully!'));
+}
+
 module.exports = {
-    addNotes,
-    deleteNotes,
+    addNote,
+    deleteNote,
     listNotes,
-    readNotes
+    readNote,
+    updateNote,
+    removeAllNotes
 };
