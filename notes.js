@@ -46,8 +46,21 @@ const listNotes = async () => {
     });
 }
 
+const readNotes = async (title) => {
+    const notes = await loadNotes();
+    const note = notes.find(note => note.title === title);
+    if(note) {
+        console.log(chalk.inverse.white('Your note : '));
+        console.log(`Title: ${title}`);
+        console.log(`Body: ${note.body}`);
+    } else {
+        console.log(chalk.inverse.red('Note with provided title not present!'));
+    }
+}
+
 module.exports = {
     addNotes,
     deleteNotes,
-    listNotes
+    listNotes,
+    readNotes
 };
