@@ -33,7 +33,7 @@ const deleteNotes = async (title) => {
         console.log(chalk.inverse.red('Note with given title doesnot exist!'));
     } else {
         saveNotes(updatedNotes);
-        console.log(chalk.inverse.green('Note removd successfully!'));
+        console.log(chalk.inverse.green('Note removed successfully!'));
     }
 }
 
