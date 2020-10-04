@@ -37,7 +37,17 @@ const deleteNotes = async (title) => {
     }
 }
 
+const listNotes = async () => {
+    const notes = await loadNotes();
+    console.log(chalk.inverse.white('Your Notes'));
+
+    notes.forEach(note => {
+        console.log(note.title);
+    });
+}
+
 module.exports = {
     addNotes,
-    deleteNotes
+    deleteNotes,
+    listNotes
 };
