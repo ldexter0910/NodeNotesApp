@@ -21,7 +21,6 @@ const addNotes = async (title, body) => {
     if(duplicateNote) {
         console.log(chalk.red.inverse('Note with same title already exists!'));
     } else {
-        // await fs.writeFile(notesPath, JSON.stringify([...notes, { title, body }]));
         saveNotes([...notes, { title, body }]);
         console.log(chalk.green.inverse('Note added!'));
     }
@@ -33,7 +32,6 @@ const deleteNotes = async (title) => {
     if(updatedNotes.length === notes.length) {
         console.log(chalk.inverse.red('Note with given title doesnot exist!'));
     } else {
-        // await fs.writeFile(notesPath, JSON.stringify(updatedNotes));
         saveNotes(updatedNotes);
         console.log(chalk.inverse.green('Note removd successfully!'));
     }
