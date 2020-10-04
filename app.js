@@ -42,6 +42,21 @@ yargs.command({
     handler: () => {
         notes.listNotes();
     }
-})
+});
+
+yargs.command({
+    command: 'read',
+    description: 'Read the note according to the provided title',
+    builder: {
+        'title': {
+            describe: 'Title of the note used to read that particular note',
+            type: 'string',
+            demandOption: true
+        }
+    },
+    handler: (argv) => {
+        notes.readNotes(argv.title);
+    }
+});
 
 yargs.parse();
